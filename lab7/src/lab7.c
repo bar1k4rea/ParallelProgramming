@@ -13,21 +13,26 @@ int main(int argc, char **argv) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
 
+    
     // Checking number of threads for MPI.
     int threads_number = atoi(argv[3]); 
-       if (!rank)
+    /*
+    if (!rank)
         if (threads_number != size) {
             fprintf(stderr, "Error! Invalid number of threads.\n");
             MPI_Abort(MPI_COMM_WORLD, MPI_ERR_OTHER);
         }
+    */
     
     // Checking сondition between number of threads and number of processes.
     int processors_number = atoi(argv[4]); 
+    /*
     if (!rank)
         if (!(processors_number > threads_number)) {
             fprintf(stderr, "Error! Invalid number of processors.\n");
             MPI_Abort(MPI_COMM_WORLD, MPI_ERR_OTHER);
         }
+    */
 
     // Initialization number of processes for OpenMP.
     int n = processors_number / threads_number;
