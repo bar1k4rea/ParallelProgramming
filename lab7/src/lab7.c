@@ -16,13 +16,11 @@ int main(int argc, char **argv) {
     
     // Checking number of threads for MPI.
     int threads_number = atoi(argv[3]); 
-    /*
     if (!rank)
         if (threads_number != size) {
             fprintf(stderr, "Error! Invalid number of threads.\n");
             MPI_Abort(MPI_COMM_WORLD, MPI_ERR_OTHER);
         }
-    */
     
     // Checking сondition between number of threads and number of processes.
     int processors_number = atoi(argv[4]); 
@@ -81,7 +79,7 @@ int main(int argc, char **argv) {
     int local_counter = 0;
 
     // Finding prime numbers in chunk of array.
-#pragma omp parallel for num_threads(n) shared(flag, number) default(none)
+#pragma omp parallel for num_threads(n) shared(flag, start_interval, end_interval, chunk, local_counter) default(none)
     for (int number = start_interval; number <= end_interval; number++) {
         flag = 1;
         int max_divisor = sqrt(number);
@@ -101,6 +99,8 @@ int main(int argc, char **argv) {
     // End of timing for each thread.
     double end_time = MPI_Wtime();
     double period = end_time - start_time;
+
+    printf("%lf\n", period);
     
     // Collecting all periods for each thread into single array - timing.
     MPI_Gather(&period, 1, MPI_DOUBLE, timing, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
